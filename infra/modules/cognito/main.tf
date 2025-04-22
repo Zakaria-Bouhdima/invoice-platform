@@ -16,6 +16,9 @@ resource "aws_cognito_user_pool_client" "client" {
   user_pool_id        = aws_cognito_user_pool.pool.id
   generate_secret     = true
   explicit_auth_flows = ["ALLOW_USER_PASSWORD_AUTH"]
+
+  callback_urls    = ["https://your-frontend-url/callback"]
+  logout_urls      = ["https://your-frontend-url/logout"]
 }
 
 resource "aws_cognito_user_pool_domain" "domain" {

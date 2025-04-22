@@ -1,30 +1,25 @@
 {
-    "name": "invoice-transformation-platform",
-    "version": "1.0.0",
-    "description": "Frontend for managing invoice transformation rules",
-    "private": true, 
-    "scripts": {
-      "dev": "vite",
-      "build": "vite build",
-      "preview": "vite preview",
-      "lint": "eslint . --ext js,jsx" 
-    },
-    "dependencies": {
-      "react": "^18.2.0",
-      "react-dom": "^18.2.0"
-    },
-    "devDependencies": {
-      "@types/react": "^18.2.45", 
-      "@types/react-dom": "^18.2.18",
-      "@vitejs/plugin-react": "^4.2.1", 
-      "eslint": "^8.55.0", 
-      "eslint-plugin-react": "^7.33.2",
-      "eslint-plugin-react-hooks": "^4.6.0",
-      "typescript": "^5.3.2", 
-      "vite": "^5.0.0" 
-    },
-    "browserslist": { 
-      "production": [">0.2%", "not dead", "not op_mini all"],
-      "development": ["last 1 chrome version", "last 1 firefox version"]
-    }
+  "name": "invoice-platform-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^1.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": ["react-app", "react-app/jest"]
+  },
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   }
+}
