@@ -1,30 +1,48 @@
+
 # ============================
-# COGNITO (Authentication)
+# MODULES
 # ============================
+
+# Cognito for Authentication
 module "cognito" {
   source = "./modules/cognito"
   user_pool_name = "invoice-pool"
 }
 
-# ============================
-# API GATEWAY
-# ============================
+# API Gateway
 module "api_gateway" {
   source = "./modules/api-gateway"
   cognito_user_pool_arn = module.cognito.user_pool_arn
   api_name              = "invoice-api"
 }
 
+
+module "frontend" {
+  source = "./modules/frontend"
+  bucket_name             = "invoice-platform-frontend"
+  enable_static_website   = true
+  acm_certificate_arn = var.acm_certificate_arn
+
+   index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "index.html"
+  }
+}
+
+
 # ============================
 # S3 (For storing raw JSON and original documents)
 # ============================
-module "s3" {
+module "invoice_storage" {
   source = "./modules/s3"
+  bucket_name             = "invoice-backend-storage"
+  enable_static_website   = false
 }
 
-# ============================
-# DYNAMODB (For storing transformation rules)
-# ============================
+# DynamoDB for Transformation Rules
 module "dynamodb" {
   source = "./modules/dynamodb"
   table_name = "ClientRules"
@@ -32,16 +50,12 @@ module "dynamodb" {
   range_key  = "version"
 }
 
-# ============================
-# EVENTBRIDGE (Orchestration between Lambdas)
-# ============================
+# EventBridge for Orchestration
 module "eventbridge" {
   source = "./modules/eventbridge"
 }
 
-# ============================
-# LAMBDA: INGESTION
-# ============================
+# Lambda Functions
 module "lambda_ingestion" {
   source = "./modules/lambda"
   function_name    = "invoice-ingestion"
@@ -49,14 +63,11 @@ module "lambda_ingestion" {
   handler          = "main.handler"
   code_path        = "../../lambdas/ingestion"
   environment_vars = {
-    S3_BUCKET       = module.s3.bucket_name
+    S3_BUCKET       = module.backend_storage.bucket_name
     EVENT_BUS_NAME  = module.eventbridge.bus_name
   }
 }
 
-# ============================
-# LAMBDA: TRANSFORMATION
-# ============================
 module "lambda_transformation" {
   source = "./modules/lambda"
   function_name    = "invoice-transformation"
@@ -65,14 +76,11 @@ module "lambda_transformation" {
   code_path        = "../../lambdas/transformation"
   environment_vars = {
     DYNAMODB_TABLE = module.dynamodb.table_name
-    S3_BUCKET      = module.s3.bucket_name
+    S3_BUCKET      = module.backend_storage.bucket_name
     EVENT_BUS_NAME = module.eventbridge.bus_name
   }
 }
 
-# ============================
-# LAMBDA: DISTRIBUTION
-# ============================
 module "lambda_distribution" {
   source = "./modules/lambda"
   function_name    = "invoice-distribution"
@@ -86,11 +94,4 @@ module "lambda_distribution" {
     })
     RETRY_ATTEMPTS = 3
   }
-}
-
-# CLOUDFRONT (CDN for frontend assets)
-module "cloudfront" {
-  source = "./modules/cloudfront"
-  s3_bucket_arn       = module.s3.bucket_arn
-  acm_certificate_arn = var.acm_certificate_arn
 }
