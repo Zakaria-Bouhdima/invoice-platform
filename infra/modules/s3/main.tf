@@ -27,20 +27,23 @@ resource "aws_s3_bucket_lifecycle_configuration" "lifecycle" {
   }
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
+  bucket = aws_s3_bucket.bucket.id
 
-
-
-#####################"
-resource "aws_s3_bucket" "bucket" {
-  bucket = "invoice-storage-${random_string.suffix.result}"
-  acl    = "private"
-
-  versioning {
-    enabled = true
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
   }
 }
 
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-}"
+resource "aws_s3_bucket_public_access_block" "block" {
+  bucket = aws_s3_bucket.bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+

@@ -1,10 +1,18 @@
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_dir  = var.code_path  # Path to your Lambda code
+  output_path = "${path.module}/lambda.zip"
+}
+
 resource "aws_lambda_function" "lambda" {
   function_name = var.function_name
   runtime       = var.runtime
   handler       = var.handler
   role          = aws_iam_role.lambda_exec.arn
-  filename      = "${path.module}/lambda.zip"
-  source_code_hash = filebase64sha256("${path.module}/lambda.zip")
+  filename      = data.archive_file.lambda_zip.output_path
+  #source_code_hash = filebase64sha256("${path.module}/lambda.zip")
+  source_code_hash = filebase64sha256(data.archive_file.lambda_zip.output_path)
+
 
   environment {
     variables = var.environment_vars
@@ -24,40 +32,4 @@ resource "aws_iam_role" "lambda_exec" {
       }
     }]
   })
-}
-
-
-
-######
-resource "aws_lambda_function" "lambda" {
-  function_name = var.function_name
-  runtime       = var.runtime
-  handler       = var.handler
-  role          = aws_iam_role.lambda_exec.arn
-  filename      = "${var.code_path}/function.zip"
-  source_code_hash = filebase64sha256("${var.code_path}/function.zip")
-
-  environment {
-    variables = var.environment_vars
-  }
-}
-
-resource "aws_iam_role" "lambda_exec" {
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_policy" {
-  role       = aws_iam_role.lambda_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
