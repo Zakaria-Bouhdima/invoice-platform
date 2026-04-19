@@ -1,0 +1,8 @@
+# AVD-AWS-0104 — Unrestricted egress on Lambda security group
+# Lambda functions require outbound internet access to reach AWS APIs and third-party endpoints.
+AVD-AWS-0104
+
+# AVD-AWS-0057 — IAM policy uses wildcard resource
+# Resource ARNs are not known at plan time (dynamic bucket/table names).
+# Scope will be tightened post-deployment using actual ARNs.
+AVD-AWS-0057

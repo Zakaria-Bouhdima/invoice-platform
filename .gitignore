@@ -1,0 +1,38 @@
+# Terraform
+.terraform/
+**/.terraform/*
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+.terraform.tfstate.lock.info
+.terraformrc
+terraform.rc
+
+# Lambda build artifacts
+*.zip
+infra/modules/lambda/*.zip
+
+# Local variable files
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Diagram generator
+architecture.py
+
+# Frontend
+front/.env
+front/node_modules/
+front/dist/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+__pycache__/
+*.pyc

@@ -1,0 +1,10 @@
+# Copy this file to terraform.tfvars and fill in your values.
+# Never commit terraform.tfvars — it is gitignored.
+
+env     = "dev"
+region  = "eu-west-1"
+project = "invoice"
+
+# Optional: ACM certificate ARN for custom domain on CloudFront.
+# Leave empty to use the default *.cloudfront.net certificate.
+acm_certificate_arn = ""
