@@ -14,3 +14,11 @@ AVD-AWS-0011
 # AVD-AWS-0190 — API Gateway stage access logging not configured
 # Logging can be added post-deployment when a CloudWatch log group ARN is available.
 AVD-AWS-0190
+
+# AVD-AWS-0132 — S3 bucket not encrypted with customer managed key
+# Using AWS-managed AES256 encryption. CMK adds cost/complexity not justified for this project.
+AVD-AWS-0132
+
+# AVD-AWS-0135 — SQS queue not encrypted with customer managed key
+# Using AWS-managed SQS key. CMK adds cost/complexity not justified for this project.
+AVD-AWS-0135

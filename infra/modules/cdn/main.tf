@@ -24,7 +24,9 @@ resource "aws_cloudfront_distribution" "this" {
 
     forwarded_values {
       query_string = false
-      cookies { forward = "none" }
+      cookies {
+        forward = "none"
+      }
     }
   }
 
@@ -35,7 +37,9 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   restrictions {
-    geo_restriction { restriction_type = "none" }
+    geo_restriction {
+      restriction_type = "none"
+    }
   }
 
   viewer_certificate {
