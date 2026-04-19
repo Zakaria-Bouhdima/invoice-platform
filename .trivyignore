@@ -6,3 +6,11 @@ AVD-AWS-0104
 # Resource ARNs are not known at plan time (dynamic bucket/table names).
 # Scope will be tightened post-deployment using actual ARNs.
 AVD-AWS-0057
+
+# AVD-AWS-0011 — CloudFront WAF not enabled
+# WAF is out of scope for this portfolio deployment. Can be added for production.
+AVD-AWS-0011
+
+# AVD-AWS-0190 — API Gateway stage access logging not configured
+# Logging can be added post-deployment when a CloudWatch log group ARN is available.
+AVD-AWS-0190
